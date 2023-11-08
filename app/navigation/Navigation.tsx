@@ -30,8 +30,6 @@ export const Navigation: FC = ({}) => {
 		}
 	}, [])
 
-	console.log('currentRoute', currentRoute)
-
 	return (
 		<>
 			<NavigationContainer ref={navRef}>
