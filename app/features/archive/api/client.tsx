@@ -1,11 +1,11 @@
 import { ApiClient } from '@/api/client'
-import { TApiGetMixesMixcloud } from './types'
+import { TApiGetMixesMixcloud, TPageParam } from './types'
 
 export enum ArchiveApiEndpoints {
-	GetMixesMixcloud = 'https://api.mixcloud.com/20ftradio/cloudcasts/?limit='
+	GetMixesMixcloud = 'https://api.mixcloud.com/20ftradio/cloudcasts/'
 }
 
-export const getMixesMixcloud = (perPage: number) =>
-	ApiClient.get<TApiGetMixesMixcloud>(
-		ArchiveApiEndpoints.GetMixesMixcloud + perPage
+export const getMixesMixcloud = async ({ limit, offset }: TPageParam) =>
+	await ApiClient.get<TApiGetMixesMixcloud>(
+		`${ArchiveApiEndpoints.GetMixesMixcloud}?limit=${limit}&offset=${offset}`
 	)

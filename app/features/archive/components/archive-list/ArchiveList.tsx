@@ -1,20 +1,16 @@
 import React from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, FlatList } from 'react-native'
 import { useMixcloudList } from '../../api/hooks'
 import { TMixcloudMix, TTag } from '../types/mix.types'
+import { Box, Spinner } from 'native-base'
 
-const MIXES_PER_PAGE = 10
+const PAGE_LIMIT = 20
+const PAGE_OFFSET = 0
 
 // todo: specify any
-export const Mix = ({
-	picture,
-	name,
-	likes,
-	tags,
-	key
-}: Record<string, any>) => {
+export const Mix = ({ picture, name, likes, tags }: Record<string, any>) => {
 	return (
-		<View className="flex flex-row" key={key}>
+		<View className="flex flex-row">
 			<Image source={{ uri: picture }} style={{ height: 80, width: 80 }} />
 			<Text>{name}</Text>
 			<Text>{likes}</Text>
@@ -26,24 +22,55 @@ export const Mix = ({
 }
 
 const ArchiveList = ({}) => {
-	//todo: refactor, use response normillizer
-	const { data: resposeMixcloud, isLoading } = useMixcloudList(MIXES_PER_PAGE)
+	const { mixes, isLoading, hasNextPage, fetchNextPage } = useMixcloudList(
+		PAGE_OFFSET,
+		PAGE_LIMIT
+	)
 
-	const mixes = resposeMixcloud?.data?.data
+	const loadMore = () => {
+		if (hasNextPage) {
+			fetchNextPage()
+		}
+	}
+
+	const renderItem = ({ item }: { item: TMixcloudMix }) => (
+		<View className="flex flex-row">
+			<Image
+				source={{ uri: item.pictures.large }}
+				style={{ height: 80, width: 80 }}
+			/>
+			<Text>{item.name}</Text>
+			{item.tags.map((tag: TTag, index) => (
+				<Text key={index} className="mix__tag">
+					{tag.name}
+				</Text>
+			))}
+		</View>
+	)
+
+	const keyExtractor = (item: TMixcloudMix, index: number) => {
+		return index.toString()
+	}
 
 	return (
 		<View>
-			{!isLoading &&
-				mixes &&
-				mixes?.map((mix: TMixcloudMix) => (
-					<Mix
-						key={mix.key}
-						name={mix.name}
-						picture={mix.pictures.large}
-						likes={mix.favorite_count}
-						tags={mix.tags}
-					/>
-				))}
+			{isLoading ? (
+				<Box
+					flex={1}
+					backgroundColor="white"
+					alignItems="center"
+					justifyContent="center"
+				>
+					<Spinner color="emerald.500" size="lg" />
+				</Box>
+			) : (
+				<FlatList
+					data={mixes}
+					keyExtractor={keyExtractor}
+					renderItem={renderItem}
+					onEndReached={loadMore}
+				/>
+			)}
 		</View>
 	)
 }

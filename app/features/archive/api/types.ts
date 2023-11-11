@@ -17,3 +17,11 @@ export type TApiGetMixesMixcloud = {
 	user: TUser
 	audio_length: number
 }
+
+export type MixesMixcloudDTO = {
+	data: {
+		data: TApiGetMixesMixcloud
+	}
+}
+
+export type TPageParam = { limit: number; offset: number }
