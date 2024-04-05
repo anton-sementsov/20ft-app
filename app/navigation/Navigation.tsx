@@ -4,10 +4,10 @@ import {
 } from '@react-navigation/native'
 import { FC, useEffect, useState } from 'react'
 import { BottomMenu } from '../components/ui/bottom-menu'
-import { View, Text } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { TypeRootStackParamList } from './navigation.types'
 import { routes } from './routes'
+import { Player } from '@/features/player/components/PlayerWrapper/Player'
 
 const Stack = createNativeStackNavigator<TypeRootStackParamList>()
 
@@ -35,11 +35,22 @@ export const Navigation: FC = ({}) => {
 			<NavigationContainer ref={navRef}>
 				<Stack.Navigator screenOptions={{}}>
 					{routes.map((route) => (
-						<Stack.Screen key={route.name} {...route}></Stack.Screen>
+						<Stack.Screen
+							key={route.name}
+							{...route}
+							options={{
+								headerStyle: {
+									backgroundColor: '#1B1B1B'
+								},
+								headerTitleStyle: {
+									color: '#A5A5A5'
+								}
+							}}
+						></Stack.Screen>
 					))}
 				</Stack.Navigator>
 			</NavigationContainer>
-
+			<Player />
 			{currentRoute && (
 				<BottomMenu nav={navRef.navigate} currentRoute={currentRoute} />
 			)}

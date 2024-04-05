@@ -1,10 +1,13 @@
 import { FC } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Dimensions, TouchableHighlight, Image } from 'react-native'
 
 export const Home: FC = ({}) => {
 	return (
-		<View>
-			<Text>Home</Text>
+		<View className="flex-col grow">
+			<Text>Home page content</Text>
+			<Text>Home page content</Text>
+			<Text>Home page content</Text>
+			<Text>Home page content</Text>
 		</View>
 	)
 }

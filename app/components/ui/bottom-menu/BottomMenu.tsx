@@ -15,7 +15,7 @@ export const BottomMenu: FC<IBottomMenu> = ({ nav, currentRoute }) => {
 	const { bottom } = useSafeAreaInsets()
 	return (
 		<View
-			className="pt-5 px-3 flex-row w-full"
+			className="pt-5 px-3 flex-row w-full bg-[#1B1B1B]"
 			style={{ paddingBottom: bottom + 10 }}
 		>
 			{menuData.map((item) => (
